@@ -1,0 +1,78 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Registrar Minuta — Asesoría de Tesis{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0 fw-bold text-buap">
+                        <i class="bi bi-journal-plus me-2"></i>Nueva Minuta de Asesoría (CU03)
+                    </h5>
+                    <small class="text-muted"><strong>Proyecto:</strong> {{ proyecto.titulo_tesis }} ({{ proyecto.alumno }})</small>
+                </div>
+                <a href="{% url 'panel_asesor' %}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-x-lg"></i>
+                </a>
+            </div>
+            <div class="card-body p-4">
+                {% if error %}
+                    <div class="alert alert-danger py-2 small" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ error }}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row g-2 mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-semibold">Fecha de la Reunión *</label>
+                            <input type="date" name="fecha_reunion" class="form-control" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-semibold">Modalidad *</label>
+                            <select name="modalidad" class="form-select" required>
+                                <option value="PRESENCIAL">Presencial</option>
+                                <option value="VIRTUAL">Virtual</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Resumen de Temas Tratados *</label>
+                        <textarea name="resumen_temas" rows="3" class="form-control" placeholder="Describe los puntos revisados y discusiones sostenidas en la sesión..." required></textarea>
+                    </div>
+
+                    <div class="p-3 bg-light rounded border mb-3">
+                        <h6 class="fw-bold text-buap mb-2">
+                            <i class="bi bi-list-check me-1"></i> Compromiso o Acuerdo Obligatorio
+                        </h6>
+                        <div class="mb-2">
+                            <label class="form-label small fw-semibold">Descripción de la Tarea *</label>
+                            <input type="text" name="descripcion_tarea" class="form-control" placeholder="Ej: Redactar estado del arte y diagramas de casos de uso" required>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-sm-6">
+                                <label class="form-label small fw-semibold">Responsable *</label>
+                                <select name="responsable" class="form-select" required>
+                                    <option value="ALUMNO">Alumno</option>
+                                    <option value="ASESOR">Asesor</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label small fw-semibold">Fecha Límite *</label>
+                                <input type="date" name="fecha_limite" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-buap w-100 py-2">
+                        <i class="bi bi-check-circle-fill me-1"></i> Guardar Minuta y Reiniciar Reloj de Rezago
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

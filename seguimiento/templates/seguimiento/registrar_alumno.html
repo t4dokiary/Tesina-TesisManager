@@ -1,0 +1,79 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Registro de Alumno — FCC BUAP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="mb-0 fw-bold text-buap">
+                    <i class="bi bi-person-plus-fill me-2"></i>Registro de Nuevo Tesista
+                </h5>
+                <small class="text-muted">Completa los campos para dar de alta tu expediente de investigación</small>
+            </div>
+            <div class="card-body p-4">
+                {% if error %}
+                    <div class="alert alert-danger py-2 small" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ error }}
+                    </div>
+                {% endif %}
+                {% if mensaje %}
+                    <div class="alert alert-success py-2 small" role="alert">
+                        <i class="bi bi-check-circle-fill me-1"></i> {{ mensaje }}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row g-2 mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-semibold">Primer Nombre *</label>
+                            <input type="text" name="primer_nombre" class="form-control" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-semibold">Segundo Nombre</label>
+                            <input type="text" name="segundo_nombre" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-semibold">Apellido Paterno *</label>
+                            <input type="text" name="apellido_paterno" class="form-control" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-semibold">Apellido Materno *</label>
+                            <input type="text" name="apellido_materno" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-semibold">Matrícula Escolar *</label>
+                            <input type="text" name="matricula" class="form-control" placeholder="Ej: 201743936" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-semibold">Teléfono *</label>
+                            <input type="tel" name="telefono" class="form-control" placeholder="2221234567" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Correo Institucional (Usuario) *</label>
+                        <input type="email" name="email" class="form-control" placeholder="alumno@alumno.buap.mx" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small fw-semibold">Contraseña *</label>
+                        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-buap w-100 py-2">
+                        <i class="bi bi-check-lg me-1"></i> Completar Registro
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Revisión de Avances — {{ proyecto.alumno }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-buap mb-1">Revisión de Entregables (CU02)</h4>
+        <p class="text-muted small mb-0"><strong>Tesista:</strong> {{ proyecto.alumno }} | <strong>Proyecto:</strong> {{ proyecto.titulo_tesis }}</p>
+    </div>
+    <a href="{% url 'panel_asesor' %}" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i> Volver a Mis Alumnos
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h6 class="mb-0 fw-bold text-buap">
+            <i class="bi bi-clock-history me-1"></i> Historial de Versiones Entregadas
+        </h6>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 10%;">Versión</th>
+                    <th style="width: 15%;">Fecha de Carga</th>
+                    <th style="width: 12%;">Archivo PDF</th>
+                    <th style="width: 28%;">Notas del Estudiante</th>
+                    <th style="width: 35%;">Retroalimentación del Asesor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in entregables %}
+                <tr>
+                    <td><span class="badge bg-primary">Versión {{ e.numero_version }}</span></td>
+                    <td class="small">{{ e.fecha_hora_subida|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <a href="{{ e.ruta_archivo_pdf.url }}" target="_blank" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Ver PDF
+                        </a>
+                    </td>
+                    <td class="small text-muted">{{ e.comentario_alumno|default:"Sin comentarios adicionales" }}</td>
+                    <td>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="entregable_id" value="{{ e.id_entregable }}">
+                            <div class="input-group">
+                                <textarea name="retroalimentacion" rows="2" class="form-control form-control-sm" placeholder="Escribe observaciones...">{{ e.retroalimentacion_asesor|default:"" }}</textarea>
+                                <button type="submit" class="btn btn-sm btn-buap">
+                                    <i class="bi bi-check2"></i> Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">El alumno no ha cargado avances todavía.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

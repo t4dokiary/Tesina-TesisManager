@@ -1,0 +1,52 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Preferencias de Notificaciones — FCC BUAP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="mb-0 fw-bold text-buap">
+                    <i class="bi bi-bell-fill me-2"></i>Preferencias de Correo
+                </h5>
+                <small class="text-muted">Personaliza qué notificaciones automáticas deseas recibir</small>
+            </div>
+            <div class="card-body p-4">
+                {% if mensaje %}
+                    <div class="alert alert-success py-2 small" role="alert">
+                        <i class="bi bi-check-circle-fill me-1"></i> {{ mensaje }}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" name="notif_inicio_sesion" id="n1" {% if config.notif_inicio_sesion %}checked{% endif %}>
+                        <label class="form-check-label small" for="n1">
+                            Avisarme cada vez que inicie sesión en la plataforma
+                        </label>
+                    </div>
+
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" name="notif_comentarios" id="n2" {% if config.notif_comentarios %}checked{% endif %}>
+                        <label class="form-check-label small" for="n2">
+                            Avisarme cuando se suban nuevos avances o correcciones en PDF
+                        </label>
+                    </div>
+
+                    <div class="form-check form-switch mb-4">
+                        <input class="form-check-input" type="checkbox" name="notif_minutas" id="n3" {% if config.notif_minutas %}checked{% endif %}>
+                        <label class="form-check-label small" for="n3">
+                            Avisarme cuando se registre una nueva minuta de asesoría
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-buap w-100 py-2">
+                        <i class="bi bi-save me-1"></i> Guardar Preferencias
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

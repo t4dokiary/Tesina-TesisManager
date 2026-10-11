@@ -1,0 +1,24 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Instrucciones Enviadas — FCC BUAP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 text-center p-4">
+            <div class="card-body">
+                <i class="bi bi-envelope-check-fill text-success fs-1 mb-3"></i>
+                <h5 class="fw-bold text-buap">Instrucciones Enviadas</h5>
+                <p class="text-muted small">
+                    Si el correo proporcionado corresponde a una cuenta activa en el sistema, se ha enviado un enlace con validez de 1 hora para renovar la contraseña.
+                </p>
+                <div class="alert alert-light border small text-start">
+                    <i class="bi bi-terminal me-1"></i> <strong>Modo desarrollo:</strong> El correo se muestra directamente en la terminal de VS Code donde corre el servidor Django.
+                </div>
+                <a href="{% url 'login_web' %}" class="btn btn-buap btn-sm px-4 mt-2">
+                    Volver al Inicio de Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

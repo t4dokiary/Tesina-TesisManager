@@ -1,0 +1,64 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Panel de Coordinación — FCC BUAP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-buap mb-1">Coordinación de Posgrado</h3>
+        <p class="text-muted small mb-0">Supervisión general de proyectos y semáforo de alerta temprana por inactividad (CU04).</p>
+    </div>
+    <a href="{% url 'registro_maestro' %}" class="btn btn-buap btn-sm">
+        <i class="bi bi-person-plus-fill me-1"></i> + Registrar Nuevo Asesor
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h6 class="mb-0 fw-bold text-buap">
+            <i class="bi bi-activity me-1"></i> Estado de Avance de Tesistas
+        </h6>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Estudiante</th>
+                    <th>Asesor</th>
+                    <th>Título del Proyecto</th>
+                    <th>Último Avance</th>
+                    <th>Inactividad</th>
+                    <th>Semáforo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in proyectos %}
+                <tr class="{% if p.tiene_alerta_rezago %}table-danger{% endif %}">
+                    <td class="fw-semibold">{{ p.alumno }}</td>
+                    <td class="text-muted small">{{ p.asesor }}</td>
+                    <td class="small" style="max-width: 320px;">{{ p.titulo_tesis }}</td>
+                    <td>{{ p.fecha_ultimo_avance|date:"d/m/Y" }}</td>
+                    <td>
+                        <span class="fw-bold">{{ p.dias_inactividad }}</span> días
+                    </td>
+                    <td>
+                        {% if p.tiene_alerta_rezago %}
+                            <span class="badge bg-danger">
+                                <i class="bi bi-exclamation-octagon-fill me-1"></i> Alerta Rezago (>30 d)
+                            </span>
+                        {% else %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle-fill me-1"></i> Al corriente
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-muted">No hay proyectos de tesis registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

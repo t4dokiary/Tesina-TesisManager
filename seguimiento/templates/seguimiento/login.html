@@ -1,0 +1,54 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Iniciar Sesión — Seguimiento de Tesis{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <i class="bi bi-shield-lock-fill text-buap fs-1"></i>
+                    <h4 class="fw-bold text-buap mt-2">Acceso al Sistema</h4>
+                    <p class="text-muted small">Ingresa con tus credenciales de posgrado</p>
+                </div>
+
+                {% if error %}
+                    <div class="alert alert-danger py-2 small" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ error }}
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Correo Institucional</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="text" name="username" class="form-control" placeholder="correo@buap.mx" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-key"></i></span>
+                            <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-buap w-100 py-2 mt-2">
+                        Iniciar Sesión
+                    </button>
+                </form>
+
+                <div class="text-center mt-4 pt-2 border-top">
+                    <a href="{% url 'recuperar' %}" class="small text-decoration-none text-muted d-block mb-2">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                    <span class="small text-muted">¿Nuevo tesista? 
+                        <a href="{% url 'registro_alumno' %}" class="fw-semibold text-decoration-none text-buap">Regístrate aquí</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Panel del Asesor — FCC BUAP{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h3 class="fw-bold text-buap mb-1">Dirección de Tesis</h3>
+    <p class="text-muted small">Estudiantes bajo tu asesoría académica.</p>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h6 class="mb-0 fw-bold text-buap"><i class="bi bi-people-fill me-1"></i> Lista de Alumnos Dirigidos</h6>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Alumno</th>
+                    <th>Título de Tesis</th>
+                    <th>Última Actividad</th>
+                    <th>Días Inactivo</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in proyectos %}
+                <tr class="{% if p.tiene_alerta_rezago %}table-danger{% endif %}">
+                    <td class="fw-semibold">{{ p.alumno }}</td>
+                    <td class="small">{{ p.titulo_tesis }}</td>
+                    <td>{{ p.fecha_ultimo_avance|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if p.tiene_alerta_rezago %}
+                            <span class="badge bg-danger">{{ p.dias_inactividad }} días</span>
+                        {% else %}
+                            <span class="badge bg-light text-dark border">{{ p.dias_inactividad }} días</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end">
+                        <a href="{% url 'revision_borradores' p.id_proyecto %}" class="btn btn-sm btn-buap me-1">
+                            <i class="bi bi-file-earmark-text me-1"></i> Revisar Avances
+                        </a>
+                        <a href="{% url 'crear_minuta' p.id_proyecto %}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-plus-circle me-1"></i> Minuta
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">No tienes alumnos de tesis asignados actualmente.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

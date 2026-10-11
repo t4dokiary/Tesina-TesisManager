@@ -1,0 +1,17 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Contraseña Actualizada — FCC BUAP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5 text-center">
+        <div class="card shadow-sm border-0 p-4">
+            <i class="bi bi-check-circle-fill text-success fs-1 mb-2"></i>
+            <h5 class="fw-bold text-buap">Contraseña Actualizada</h5>
+            <p class="text-muted small">Tu contraseña ha sido modificada correctamente y tu token de acceso fue renovado.</p>
+            <div>
+                <a href="{% url 'login_web' %}" class="btn btn-buap btn-sm px-4">Iniciar Sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

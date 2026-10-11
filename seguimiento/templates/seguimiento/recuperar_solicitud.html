@@ -1,0 +1,33 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Recuperar Contraseña — FCC BUAP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-3">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4 text-center">
+                <i class="bi bi-key-fill text-buap fs-1 mb-2"></i>
+                <h5 class="fw-bold text-buap">Restablecer Contraseña</h5>
+                <p class="text-muted small">Ingresa tu correo institucional registrado. Recibirás un enlace seguro válido por 1 hora.</p>
+
+                <form method="POST" class="text-start mt-3">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Correo Institucional</label>
+                        <input type="email" name="email" class="form-control" placeholder="correo@buap.mx" required>
+                    </div>
+                    <button type="submit" class="btn btn-buap w-100 py-2">
+                        <i class="bi bi-send-fill me-1"></i> Enviar Enlace de Recuperación
+                    </button>
+                </form>
+
+                <div class="mt-3">
+                    <a href="{% url 'login_web' %}" class="small text-decoration-none text-muted">
+                        <i class="bi bi-arrow-left"></i> Regresar al Inicio de Sesión
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

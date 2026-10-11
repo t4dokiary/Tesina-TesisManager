@@ -1,0 +1,141 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Expediente de Tesis — Alumno{% endblock %}
+
+{% block content %}
+{% if proyecto %}
+    <div class="card shadow-sm border-0 mb-4 border-start border-4 border-primary">
+        <div class="card-body">
+            <h4 class="fw-bold text-buap mb-2">{{ proyecto.titulo_tesis }}</h4>
+            <div class="row text-muted small g-2 mt-1">
+                <div class="col-md-4"><strong>Asesor:</strong> {{ proyecto.asesor }}</div>
+                <div class="col-md-4"><strong>Línea:</strong> {{ proyecto.linea_investigacion }}</div>
+                <div class="col-md-4">
+                    <strong>Último Avance:</strong> {{ proyecto.fecha_ultimo_avance|date:"d/m/Y" }} 
+                    ({{ proyecto.dias_inactividad }} días)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CU02: Formulario de Carga -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3">
+            <h6 class="mb-0 fw-bold text-buap">
+                <i class="bi bi-cloud-arrow-up-fill me-1"></i> Subir Nuevo Avance de Tesis (PDF)
+            </h6>
+        </div>
+        <div class="card-body">
+            {% if error %}
+                <div class="alert alert-danger py-2 small" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Archivo de Borrador (Formato PDF exclusivo):</label>
+                    <input type="file" name="archivo_pdf" class="form-control" accept=".pdf" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Comentarios sobre esta versión:</label>
+                    <textarea name="comentario_alumno" rows="2" class="form-control" placeholder="Describe los capítulos redactados o las correcciones atendidas..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-buap btn-sm px-3">
+                    <i class="bi bi-upload me-1"></i> Subir Avance
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CU02: Historial Inmutable -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-3">
+            <h6 class="mb-0 fw-bold text-buap"><i class="bi bi-clock-history me-1"></i> Historial de Versiones Entregadas</h6>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Versión</th>
+                        <th>Fecha de Carga</th>
+                        <th>Archivo</th>
+                        <th>Notas del Alumno</th>
+                        <th>Observaciones del Asesor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in entregables %}
+                    <tr>
+                        <td><span class="badge bg-primary">v{{ e.numero_version }}</span></td>
+                        <td>{{ e.fecha_hora_subida|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <a href="{{ e.ruta_archivo_pdf.url }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-file-pdf me-1"></i> Ver PDF
+                            </a>
+                        </td>
+                        <td class="small">{{ e.comentario_alumno|default:"Sin notas" }}</td>
+                        <td class="small">
+                            {% if e.retroalimentacion_asesor %}
+                                <span class="text-primary">{{ e.retroalimentacion_asesor }}</span>
+                            {% else %}
+                                <span class="text-muted fst-italic">Pendiente de revisión</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">Aún no has registrado entregas de borrador.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- CU03: Minutas de Asesoría -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+            <h6 class="mb-0 fw-bold text-buap"><i class="bi bi-journal-text me-1"></i> Minutas de Asesoría y Tareas</h6>
+        </div>
+        <div class="card-body">
+            {% for m in minutas %}
+                <div class="border rounded p-3 mb-3 bg-light">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold text-buap">
+                            <i class="bi bi-calendar-event me-1"></i> Sesión del {{ m.fecha_reunion|date:"d/m/Y" }}
+                        </span>
+                        <span class="badge bg-secondary">{{ m.modalidad }}</span>
+                    </div>
+                    <p class="small text-muted mb-2"><strong>Temas tratados:</strong> {{ m.resumen_temas }}</p>
+                    <table class="table table-sm table-bordered bg-white mb-0 small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tarea acordada</th>
+                                <th>Responsable</th>
+                                <th>Fecha límite</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in m.acuerdos.all %}
+                            <tr>
+                                <td>{{ a.descripcion_tarea }}</td>
+                                <td><span class="badge bg-light text-dark border">{{ a.responsable }}</span></td>
+                                <td>{{ a.fecha_limite|date:"d/m/Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% empty %}
+                <p class="text-muted text-center py-3 mb-0">No hay minutas registradas todavía.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-info py-4 text-center">
+        <h5>Cuenta registrada en el sistema</h5>
+        <p class="mb-0 small">La Coordinación aún no te ha vinculado formalmente con un Asesor ni con un Proyecto de Tesis.</p>
+    </div>
+{% endif %}
+{% endblock %}

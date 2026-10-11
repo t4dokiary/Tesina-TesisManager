@@ -1,0 +1,22 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Nueva Contraseña{% endblock %}
+
+{% block content %}
+<div style="max-width: 420px; margin: 40px auto;">
+    <div class="card">
+        <h2>Nueva Contraseña</h2>
+        <p style="font-size: 13px; color: #64748b;">Introduce tu nueva contraseña. Por seguridad, todas las sesiones y tokens anteriores serán cerrados.</p>
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="campo">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}<div style="color:var(--rojo-alerta); font-size:12px;">{{ field.errors }}</div>{% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primario" style="width: 100%; margin-top: 10px;">Cambiar Contraseña</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

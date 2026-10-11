@@ -1,0 +1,65 @@
+{% extends 'seguimiento/base.html' %}
+{% block title %}Inicio — Seguimiento de Tesis FCC BUAP{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm border border-light text-center">
+    <div class="container-fluid py-2">
+        <h1 class="display-6 fw-bold text-buap">Sistema Integral de Seguimiento de Tesis</h1>
+        <p class="col-md-8 mx-auto fs-6 text-muted mt-3">
+            Plataforma digital para la gestión de avances en formato PDF, registro formal de minutas y prevención oportuna del rezago académico en programas de posgrado.
+        </p>
+        {% if not user.is_authenticated %}
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a href="{% url 'login_web' %}" class="btn btn-buap px-4 py-2">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Ingresar a la Plataforma
+                </a>
+                <a href="{% url 'registro_alumno' %}" class="btn btn-outline-secondary px-4 py-2">
+                    <i class="bi bi-person-plus me-1"></i> Registrarse como Tesista
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 border-top border-4 border-primary">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-file-earmark-pdf-fill fs-3 text-primary me-2"></i>
+                    <h5 class="card-title mb-0 fw-bold">Control de PDFs (CU02)</h5>
+                </div>
+                <p class="card-text text-muted small">
+                    Recepción exclusiva en formato PDF. Registro inmutable de versiones para garantizar que ninguna corrección o entrega anterior se sobreescriba.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 border-top border-4 border-info">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-journal-check fs-3 text-info me-2"></i>
+                    <h5 class="card-title mb-0 fw-bold">Minutas de Asesoría (CU03)</h5>
+                </div>
+                <p class="card-text text-muted small">
+                    Formalización de acuerdos tras cada sesión presencial o virtual. Obligatoriedad de fecha, temas revisados y asignación de tareas con fecha límite.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0 border-top border-4 border-danger">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-stopwatch-fill fs-3 text-danger me-2"></i>
+                    <h5 class="card-title mb-0 fw-bold">Semáforo de Rezago (CU04)</h5>
+                </div>
+                <p class="card-text text-muted small">
+                    Supervisión automatizada de tiempos. Si un estudiante suma más de 30 días naturales sin registrar actividad, se genera una alerta preventiva.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
